@@ -8,7 +8,7 @@ from utils.settings import get_project_root
 ROOT = get_project_root()
 
 
-def create_address_fields_dataframe(full_address_series=None):
+def create_address_fields_dataframe(full_address_series=None, unique_street_types=None):
 
     df_address_fields = pd.DataFrame(columns=['street_number', 'street_type', 'street_name', 'address_line2',
                                               'postal_code', 'city'])
@@ -65,12 +65,11 @@ def create_address_fields_dataframe(full_address_series=None):
 
 
 if __name__ == '__main__':
-    s1_cstr = pd.read_csv(os.path.join(ROOT, 'source1_cstr.csv'))
-    s2_nond_cstr = pd.read_csv(os.path.join(ROOT, 'source2_nonanids_nod_cstr.csv'))
-
+    s1_cstr = pd.read_csv(os.path.join(ROOT, 'data' 'source1_cstr.csv'))
+    s2_nond_cstr = pd.read_csv(os.path.join(ROOT, 'data', 'source2_nonanids_nod_cstr.csv'))
     unique_street_types = np.unique(s1_cstr['street_type'].dropna())
 
-    df_address_fields = create_address_fields_dataframe(s2_nond_cstr['address'])
-    df_address_fields.to_csv(os.path.join(ROOT, 'source2_nonanids_nod_cstr_parsed.csv'), index=False)
+    df_address_fields = create_address_fields_dataframe(s2_nond_cstr['address'], unique_street_types)
+    df_address_fields.to_csv(os.path.join(ROOT, 'data', 'source2_nonanids_nod_cstr_parsed.csv'), index=False)
 
 
