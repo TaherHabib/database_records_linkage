@@ -66,10 +66,10 @@ def create_address_fields_dataframe(full_address_series=None, unique_street_type
 
 if __name__ == '__main__':
     s1_cstr = pd.read_csv(os.path.join(ROOT, 'data' 'source1_cstr.csv'))
-    s2_nond_cstr = pd.read_csv(os.path.join(ROOT, 'data', 'source2_nonanids_nod_cstr.csv'))
+    s2_nond_cstr = pd.read_csv(os.path.join(ROOT, 'data', 'source2_cstr.csv'))
     unique_street_types = np.unique(s1_cstr['street_type'].dropna())
 
     df_address_fields = create_address_fields_dataframe(s2_nond_cstr['address'], unique_street_types)
-    df_address_fields.to_csv(os.path.join(ROOT, 'data', 'source2_nonanids_nod_cstr_parsed.csv'), index=False)
+    df_address_fields.to_csv(os.path.join(ROOT, 'data', 'source2_cstr_parsed.csv'), index=False)
 
 
