@@ -44,8 +44,8 @@ def compute_feature_compare(df_left=None,
                 threshold=similarity_threshold, method=similarity_metric)
     comp.string(left_on='address_line2', right_on='address_line2', label='address_line2', missing_value=missing_value,
                 threshold=similarity_threshold, method=similarity_metric)
-    comp.string(left_on='city', right_on='city', label='city', missing_value=missing_value,
-                threshold=similarity_threshold, method=similarity_metric)
+    #comp.string(left_on='city', right_on='city', label='city', missing_value=missing_value,
+    #            threshold=similarity_threshold, method=similarity_metric)
     comp.exact(left_on='street_number', right_on='street_number', label='street_number', missing_value=missing_value)
     comp.exact(left_on='postal_code', right_on='postal_code', label='postal_code', missing_value=missing_value)
 
@@ -56,19 +56,19 @@ def compute_feature_compare(df_left=None,
 
 if __name__ == '__main__':
 
-    index_algorithm = 'block' # 'sorted_neighborhood' #
+    index_algorithm = 'sorted_neighborhood' # 'block' #  #
 
     if index_algorithm == 'sorted_neighborhood':
         index_algorithm_params = {
-            'left_block_on_cols': ['id'], #['city'],
-            'right_block_on_cols': ['id'], #['city'],
+            'left_block_on_cols': ['city'], #['city'],
+            'right_block_on_cols': ['city'], #['city'],
             'left_sorting_key': 'name',
             'right_sorting_key': 'name',
         }
     else:
         index_algorithm_params = {
-            'left_block_on_cols': ['id'], #['city', 'name'],
-            'right_block_on_cols': ['id'], #['city', 'name'],
+            'left_block_on_cols': ['city', 'name'], # ['id'], #
+            'right_block_on_cols': ['city', 'name'], # ['id'], #
         }
 
     similarity_metric = 'jarowinkler' # 'cosine'
@@ -78,6 +78,7 @@ if __name__ == '__main__':
 
     s1_cstr = pd.read_csv(os.path.join(ROOT, 'data', 'source1_cstr.csv'))
     s2_cstr_parsed = pd.read_csv(os.path.join(ROOT, 'data', 'source2_cstr_parsedaddress.csv'))
+    # s2_cstr_parsed['postal_code'] = s2_cstr_parsed['postal_code'].fillna(0).astype(str)
 
     df_feature_compare = compute_feature_compare(df_left=s1_cstr,
                                                  df_right=s2_cstr_parsed,
@@ -87,11 +88,10 @@ if __name__ == '__main__':
                                                  similarity_threshold=threshold,
                                                  missing_value=label_for_missing_values)
 
-    df_feature_compare.rename(columns={'Unnamed: 0': 'Source1_index', 'Unnamed: 1': 'Source2_index'}, inplace=True)
-    df_feature_compare.to_csv(os.path.join(ROOT, 'data', 'compared_features_id_{}_{}_{}.csv'.format(index_algorithm,
-                                                                                                    similarity_metric,
-                                                                                                    threshold
-                                                                                                    )
+    # df_feature_compare.rename(columns={'Unnamed: 0': 'Source1_index', 'Unnamed: 1': 'Source2_index'}, inplace=True)
+    df_feature_compare.to_csv(os.path.join(ROOT, 'data', 'compared_features_{}_{}_{}.csv'.format(index_algorithm,
+                                                                                                 similarity_metric,
+                                                                                                 threshold
+                                                                                                 )
                                            )
                               )
-
